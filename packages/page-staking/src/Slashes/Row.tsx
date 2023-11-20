@@ -1,7 +1,7 @@
 // Copyright 2017-2023 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Slash } from './types';
+import type { Slash } from './types.js';
 
 import React, { useCallback } from 'react';
 
@@ -10,7 +10,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
 
-import { useTranslation } from '../translate';
+import { useTranslation } from '../translate.js';
 
 interface Props {
   index: number;
@@ -57,7 +57,7 @@ function Row ({ index, isSelected, onSelect, slash: { era, isMine, slash: { othe
         {!!others.length && (
           <ExpanderScroll
             renderChildren={renderOthers}
-            summary={t<string>('Nominators ({{count}})', { replace: { count: formatNumber(others.length) } })}
+            summary={t('Nominators ({{count}})', { replace: { count: formatNumber(others.length) } })}
           />
         )}
       </td>

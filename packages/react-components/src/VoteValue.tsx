@@ -10,8 +10,8 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { BalanceVoting } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
-import InputBalance from './InputBalance';
-import { useTranslation } from './translate';
+import InputBalance from './InputBalance.js';
+import { useTranslation } from './translate.js';
 
 interface Props {
   accountId?: string | null;
@@ -29,7 +29,7 @@ interface ValueState {
   value: BN;
 }
 
-const LOCKS_ORDERED = ['pyconvot', 'democrac', 'phrelect'];
+const LOCKS_ORDERED = ['pyconvot', 'democrac', 'phrelect'] as const;
 
 function getValues (selectedId: string | null | undefined, noDefault: boolean | undefined, allBalances: DeriveBalancesAll, existential: BN): ValueState {
   const sortedLocks = allBalances.lockedBreakdown
@@ -40,7 +40,7 @@ function getValues (selectedId: string | null | undefined, noDefault: boolean | 
     // then sort by the type of lock (we try to find relevant)
     .sort((a, b): number => {
       if (!a.id.eq(b.id)) {
-        for (let i = 0; i < LOCKS_ORDERED.length; i++) {
+        for (let i = 0, count = LOCKS_ORDERED.length; i < count; i++) {
           const lockName = LOCKS_ORDERED[i];
 
           if (a.id.eq(lockName)) {
@@ -123,10 +123,10 @@ function VoteValue ({ accountId, autoFocus, label, noDefault, onChange }: Props)
       }
       isDisabled={isDisabled}
       isZeroable
-      label={label || t<string>('vote value')}
+      label={label || t('vote value')}
       labelExtra={
         <BalanceVoting
-          label={<label>{t<string>('voting balance')}</label>}
+          label={<label>{t('voting balance')}</label>}
           params={accountId}
         />
       }

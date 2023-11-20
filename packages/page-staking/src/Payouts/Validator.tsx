@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { BN } from '@polkadot/util';
-import type { PayoutValidator } from './types';
+import type { PayoutValidator } from './types.js';
 
 import React, { useMemo } from 'react';
 
 import { AddressMini, AddressSmall, Expander, Table } from '@polkadot/react-components';
 import { BlockToTime } from '@polkadot/react-query';
 
-import { useTranslation } from '../translate';
-import PayButton from './PayButton';
-import useEraBlocks from './useEraBlocks';
-import { createErasString } from './util';
+import { useTranslation } from '../translate.js';
+import PayButton from './PayButton.js';
+import useEraBlocks from './useEraBlocks.js';
+import { createErasString } from './util.js';
 
 interface Props {
   className?: string;
@@ -72,7 +72,7 @@ function Validator ({ className = '', historyDepth, isDisabled, payout }: Props)
         className='expand'
         colSpan={2}
       >
-        <Expander summary={t<string>('{{count}} own stashes', { replace: { count: numNominators } })}>
+        <Expander summary={t('{{count}} own stashes', { replace: { count: numNominators } })}>
           {Object.entries(nominators).map(([stashId, balance]) =>
             <AddressMini
               balance={balance}

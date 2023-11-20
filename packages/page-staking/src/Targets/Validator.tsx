@@ -3,7 +3,7 @@
 
 import type { UnappliedSlash } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
-import type { NominatedBy, ValidatorInfo } from '../types';
+import type { NominatedBy, ValidatorInfo } from '../types.js';
 
 import React, { useCallback, useMemo } from 'react';
 
@@ -13,8 +13,8 @@ import { useApi, useBlockTime, useDeriveAccountInfo } from '@polkadot/react-hook
 import { FormatBalance } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
 
-import MaxBadge from '../MaxBadge';
-import { useTranslation } from '../translate';
+import MaxBadge from '../MaxBadge.js';
+import { useTranslation } from '../translate.js';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -102,7 +102,7 @@ function Validator ({ allSlashes, canSelect, filterName, info: { accountId, bond
         {slashes.length !== 0 && (
           <Badge
             color='red'
-            hover={t<string>('Slashed in era {{eras}}', {
+            hover={t('Slashed in era {{eras}}', {
               replace: {
                 eras: slashes.map(({ era }) => formatNumber(era)).join(', ')
               }
@@ -120,9 +120,9 @@ function Validator ({ allSlashes, canSelect, filterName, info: { accountId, bond
           api.consts.babe
             ? time.days
               ? time.days === 1
-                ? t<string>('yesterday')
-                : t<string>('{{days}} days', { replace: { days: time.days } })
-              : t<string>('recently')
+                ? t('yesterday')
+                : t('{{days}} days', { replace: { days: time.days } })
+              : t('recently')
             : formatNumber(lastPayout)
         )}
       </td>

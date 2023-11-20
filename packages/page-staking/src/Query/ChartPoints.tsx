@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveStakerPoints } from '@polkadot/api-derive/types';
-import type { LineData, Props } from './types';
+import type { LineData, Props } from './types.js';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
 
-import { useTranslation } from '../translate';
-import Chart from './Chart';
+import { useTranslation } from '../translate.js';
+import Chart from './Chart.js';
 
 const COLORS_POINTS = [undefined, '#acacac'];
 
@@ -58,8 +58,8 @@ function ChartPoints ({ labels, validatorId }: Props): React.ReactElement<Props>
   );
 
   const legendsRef = useRef([
-    t<string>('points'),
-    t<string>('average')
+    t('points'),
+    t('average')
   ]);
 
   return (
@@ -67,7 +67,7 @@ function ChartPoints ({ labels, validatorId }: Props): React.ReactElement<Props>
       colors={COLORS_POINTS}
       labels={labels}
       legends={legendsRef.current}
-      title={t<string>('era points')}
+      title={t('era points')}
       values={values}
     />
   );

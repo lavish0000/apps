@@ -11,7 +11,7 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { Elapsed } from '@polkadot/react-query';
 import { BN_THREE, BN_TWO, formatNumber } from '@polkadot/util';
 
-import { useTranslation } from './translate';
+import { useTranslation } from './translate.js';
 
 interface Props {
   className?: string;
@@ -25,10 +25,10 @@ function SummarySession ({ className, withEra = true, withSession = true }: Prop
   const sessionInfo = useCall<DeriveSessionProgress>(api.derive.session?.progress);
   const forcing = useCall<Forcing>(api.query.staking?.forceEra);
 
-  const eraLabel = t<string>('era');
+  const eraLabel = t('era');
   const sessionLabel = api.query.babe
-    ? t<string>('epoch')
-    : t<string>('session');
+    ? t('epoch')
+    : t('session');
   const activeEraStart = sessionInfo?.activeEraStart.unwrapOr(null);
 
   return (
@@ -93,7 +93,7 @@ function SummarySession ({ className, withEra = true, withSession = true }: Prop
                       className={`${sessionInfo ? '' : '--tmp'} isSecondary`}
                       value={activeEraStart}
                     >
-                      &nbsp;{t<string>('elapsed')}
+                      &nbsp;{t('elapsed')}
                     </Elapsed>
                   )}
                 </CardSummary>

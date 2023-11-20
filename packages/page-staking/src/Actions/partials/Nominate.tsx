@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { BN } from '@polkadot/util';
-import type { SortedTargets } from '../../types';
-import type { NominateInfo } from './types';
+import type { SortedTargets } from '../../types.js';
+import type { NominateInfo } from './types.js';
 
 import React, { useEffect, useState } from 'react';
 
 import { InputAddressMulti, MarkWarning, Modal, styled } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
-import { MAX_NOMINATIONS, STORE_FAVS_BASE } from '../../constants';
-import { useTranslation } from '../../translate';
-import PoolInfo from './PoolInfo';
-import SenderInfo from './SenderInfo';
+import { MAX_NOMINATIONS, STORE_FAVS_BASE } from '../../constants.js';
+import { useTranslation } from '../../translate.js';
+import PoolInfo from './PoolInfo.js';
+import SenderInfo from './SenderInfo.js';
 
 interface Props {
   className?: string;
@@ -47,7 +47,7 @@ function Nominate ({ className = '', controllerId, nominating, onChange, poolId,
   useEffect((): void => {
     try {
       onChange({
-        nominateTx: selected && selected.length
+        nominateTx: selected?.length
           ? poolId
             ? api.tx.nominationPools.nominate(poolId, selected)
             : api.tx.staking.nominate(selected)
@@ -58,9 +58,11 @@ function Nominate ({ className = '', controllerId, nominating, onChange, poolId,
     }
   }, [api, onChange, poolId, selected]);
 
-  const maxNominations = api.consts.staking.maxNominations
-    ? (api.consts.staking.maxNominations as BN).toNumber()
-    : MAX_NOMINATIONS;
+  const maxNominations = api.consts.staking.maxNominatorRewardedPerValidator
+    ? api.consts.staking.maxNominatorRewardedPerValidator.toNumber()
+    : api.consts.staking.maxNominations
+      ? (api.consts.staking.maxNominations as unknown as BN).toNumber()
+      : MAX_NOMINATIONS;
 
   return (
     <StyledDiv className={className}>
@@ -82,20 +84,20 @@ function Nominate ({ className = '', controllerId, nominating, onChange, poolId,
       <Modal.Columns
         hint={
           <>
-            <p>{t<string>('Nominators can be selected manually from the list of all currently available validators.')}</p>
-            <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')}</p>
+            <p>{t('Nominators can be selected manually from the list of all currently available validators.')}</p>
+            <p>{t('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')}</p>
           </>
         }
       >
         <InputAddressMulti
           available={available}
-          availableLabel={t<string>('candidate accounts')}
+          availableLabel={t('candidate accounts')}
           defaultValue={nominating}
           maxCount={maxNominations}
           onChange={setSelected}
-          valueLabel={t<string>('nominated accounts')}
+          valueLabel={t('nominated accounts')}
         />
-        <MarkWarning content={t<string>('You should trust your nominations to act competently and honest; basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.')} />
+        <MarkWarning content={t('You should trust your nominations to act competently and honest; basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.')} />
       </Modal.Columns>
     </StyledDiv>
   );

@@ -3,8 +3,7 @@
 
 import type { DeriveCollectiveProposal } from '@polkadot/api-derive/types';
 import type { BountyStatus } from '@polkadot/types/interfaces';
-
-import { BountyVotingStatuses, StatusName } from '../types';
+import type { BountyVotingStatuses, StatusName } from '../types.js';
 
 const validProposalNames: BountyVotingStatuses = {
   Active: ['closeBounty', 'unassignCurator'],
@@ -24,7 +23,7 @@ function getProposalByMethod (bountyProposals: DeriveCollectiveProposal[], metho
 }
 
 function bestValidProposalName (bountyProposals: DeriveCollectiveProposal[], status: BountyStatus): string | undefined {
-  const methods = bountyProposals.map(({ proposal }) => proposal && proposal.method);
+  const methods = bountyProposals.map(({ proposal }) => proposal?.method);
 
   return validMethods(status).find((method) => methods.includes(method));
 }

@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { BN } from '@polkadot/util';
-import type { ExternalDef } from './types';
+import type { ExternalDef } from './types.js';
 
-import { externalSubsquareSVG } from '../ui/logos/external';
+import { externalSubsquareSVG } from '../ui/logos/external/index.js';
 
 export const Subsquare: ExternalDef = {
   chains: {
     Acala: 'acala',
     Altair: 'altair',
     Basilisk: 'basilisk',
-    Bifrost: 'bifrost',
+    Bifrost: 'bifrost-kusama',
+    'Bifrost Polkadot': 'bifrost-polkadot',
     Centrifuge: 'centrifuge',
+    Collectives: 'collectives',
     Crust: 'crust',
-    'Darwinia Crab': 'crab',
+    Darwinia2: 'darwinia2',
     HydraDX: 'hydradx',
     Interlay: 'interlay',
     Karura: 'karura',
@@ -22,18 +24,22 @@ export const Subsquare: ExternalDef = {
     Kusama: 'kusama',
     Litentry: 'litentry',
     Litmus: 'litmus',
+    Moonriver: 'moonriver',
     Phala: 'phala',
     Polkadot: 'polkadot',
     Rococo: 'rococo',
     'Turing Network': 'turing',
+    'Vara Network': 'vara',
+    'Westend Collectives': 'westend-collectives',
     Zeitgeist: 'zeitgeist',
     kintsugi: 'kintsugi'
   },
   create: (chain: string, path: string, data: BN | number | string): string =>
-    `https://${chain}.subsquare.io/${path}/${data.toString()}`,
+    `https://${chain}.subsquare.io/${path}/${data.toString()}${path === 'user' ? '/votes' : ''}`,
   homepage: 'https://subsquare.io/',
   isActive: true,
   paths: {
+    address: 'user',
     bounty: 'treasury/bounty',
     council: 'council/motion',
     democracyExternal: 'democracy/external',

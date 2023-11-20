@@ -13,7 +13,7 @@ import { getTypeDef } from '@polkadot/types/create';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { isNull } from '@polkadot/util';
 
-import { useTranslation } from '../translate';
+import { useTranslation } from '../translate.js';
 
 interface Props {
   queueRpc: QueueTxRpcAdd;
@@ -82,7 +82,7 @@ function Selection ({ queueRpc }: Props): React.ReactElement<Props> {
     <section className='rpc--Selection'>
       <InputRpc
         defaultValue={defaultMethod}
-        label={t<string>('call the selected endpoint')}
+        label={t('call the selected endpoint')}
         onChange={_onChangeMethod}
       />
       <Params
@@ -94,7 +94,7 @@ function Selection ({ queueRpc }: Props): React.ReactElement<Props> {
         <Button
           icon='sign-in-alt'
           isDisabled={!isValid}
-          label={t<string>('Submit RPC call')}
+          label={t('Submit RPC call')}
           onClick={_onSubmit}
         />
       </Button.Group>

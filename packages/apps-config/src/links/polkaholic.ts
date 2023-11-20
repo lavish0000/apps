@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { BN } from '@polkadot/util';
-import type { ExternalDef } from './types';
+import type { ExternalDef } from './types.js';
 
-import { externalPolkaholicPNG } from '../ui/logos/external';
+import { externalPolkaholicPNG } from '../ui/logos/external/index.js';
 
 export const Polkaholic: ExternalDef = {
   chains: {
@@ -45,13 +45,14 @@ export const Polkaholic: ExternalDef = {
     'Parallel Heiko': 'parallel-heiko',
     Picasso: 'picasso',
     'Pichiu Network': 'pichiu',
-    'Pioneer Network': 'bitcountrypioneer',
+    'Pioneer Network': 'pioneer',
     Polkadot: 'polkadot',
     'QUARTZ by UNIQUE': 'quartz',
     Robonomics: 'robonomics',
     Shiden: 'shiden',
     Statemine: 'statemine',
     Statemint: 'statemint',
+    Subsocial: 'subsocial',
     SubsocialX: 'subsocialx',
     'Turing Network': 'turing',
     UNIQUE: 'unique',

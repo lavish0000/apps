@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveStakerPrefs } from '@polkadot/api-derive/types';
-import type { LineData, Props } from './types';
+import type { LineData, Props } from './types.js';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BN, BN_BILLION } from '@polkadot/util';
 
-import { useTranslation } from '../translate';
-import Chart from './Chart';
+import { useTranslation } from '../translate.js';
+import Chart from './Chart.js';
 
 const MULT = new BN(100 * 100);
 const COLORS_POINTS = [undefined, '#acacac'];
@@ -63,8 +63,8 @@ function ChartPrefs ({ labels, validatorId }: Props): React.ReactElement<Props> 
   );
 
   const legendsRef = useRef([
-    t<string>('commission'),
-    t<string>('average')
+    t('commission'),
+    t('average')
   ]);
 
   return (
@@ -72,7 +72,7 @@ function ChartPrefs ({ labels, validatorId }: Props): React.ReactElement<Props> 
       colors={COLORS_POINTS}
       labels={labels}
       legends={legendsRef.current}
-      title={t<string>('commission')}
+      title={t('commission')}
       values={values}
     />
   );

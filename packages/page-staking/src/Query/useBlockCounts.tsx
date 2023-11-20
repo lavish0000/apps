@@ -3,7 +3,7 @@
 
 import type { DeriveSessionIndexes } from '@polkadot/api-derive/types';
 import type { u32 } from '@polkadot/types';
-import type { SessionRewards } from '../types';
+import type { SessionRewards } from '../types.js';
 
 import { useEffect, useState } from 'react';
 
@@ -19,7 +19,7 @@ function useBlockCountsImpl (accountId: string, sessionRewards: SessionRewards[]
   const [historic, setHistoric] = useState<u32[]>([]);
 
   useEffect((): void => {
-    if (isFunction(api.query.imOnline?.authoredBlocks) && sessionRewards && sessionRewards.length) {
+    if (isFunction(api.query.imOnline?.authoredBlocks) && sessionRewards?.length) {
       const filtered = sessionRewards.filter(({ sessionIndex }): boolean => sessionIndex.gt(BN_ZERO));
 
       if (filtered.length) {

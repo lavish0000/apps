@@ -1,6 +1,7 @@
 // Copyright 2017-2023 @polkadot/react-signer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import type { ApiPromise } from '@polkadot/api';
 import type { SignerOptions } from '@polkadot/api/submittable/types';
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { Ledger } from '@polkadot/hw-ledger';
@@ -10,11 +11,10 @@ import type { Option } from '@polkadot/types';
 import type { Multisig, Timepoint } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
 import type { HexString } from '@polkadot/util/types';
-import type { AddressFlags, AddressProxy, QrState } from './types';
+import type { AddressFlags, AddressProxy, QrState } from './types.js';
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { ApiPromise } from '@polkadot/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { Button, ErrorBoundary, Modal, Output, styled, Toggle } from '@polkadot/react-components';
 import { useApi, useLedger, useQueue, useToggle } from '@polkadot/react-hooks';
@@ -22,14 +22,14 @@ import { keyring } from '@polkadot/ui-keyring';
 import { assert, nextTick } from '@polkadot/util';
 import { addressEq } from '@polkadot/util-crypto';
 
-import Address from './Address';
-import Qr from './Qr';
-import { AccountSigner, LedgerSigner, QrSigner } from './signers';
-import SignFields from './SignFields';
-import Tip from './Tip';
-import Transaction from './Transaction';
-import { useTranslation } from './translate';
-import { cacheUnlock, extractExternal, handleTxResults } from './util';
+import { AccountSigner, LedgerSigner, QrSigner } from './signers/index.js';
+import Address from './Address.js';
+import Qr from './Qr.js';
+import SignFields from './SignFields.js';
+import Tip from './Tip.js';
+import Transaction from './Transaction.js';
+import { useTranslation } from './translate.js';
+import { cacheUnlock, extractExternal, handleTxResults } from './util.js';
 
 interface Props {
   className?: string;
@@ -55,7 +55,11 @@ function unlockAccount ({ isUnlockCached, signAddress, signPassword }: AddressPr
   let publicKey;
 
   try {
-    publicKey = keyring.decodeAddress(signAddress as string);
+    if (!signAddress) {
+      throw new Error('Invalid signAddress');
+    }
+
+    publicKey = keyring.decodeAddress(signAddress);
   } catch (error) {
     console.error(error);
 
@@ -167,11 +171,15 @@ async function extractParams (api: ApiPromise, address: string, options: Partial
   const { meta: { accountOffset, addressOffset, isExternal, isHardware, isInjected, isProxied, source } } = pair;
 
   if (isHardware) {
-    return ['signing', address, { ...options, signer: new LedgerSigner(api.registry, getLedger, accountOffset as number || 0, addressOffset as number || 0) }];
+    return ['signing', address, { ...options, signer: new LedgerSigner(api.registry, getLedger, accountOffset || 0, addressOffset || 0) }];
   } else if (isExternal && !isProxied) {
     return ['qr', address, { ...options, signer: new QrSigner(api.registry, setQrState) }];
   } else if (isInjected) {
-    const injected = await web3FromSource(source as string);
+    if (!source) {
+      throw new Error(`Unable to find injected source for ${address}`);
+    }
+
+    const injected = await web3FromSource(source);
 
     assert(injected, `Unable to find a signer for ${address}`);
 
@@ -259,7 +267,9 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
           } catch (error) {
             console.error(error);
 
-            passwordError = t<string>('Unable to connect to the Ledger, ensure support is enabled in settings and no other app is using it. {{error}}', { replace: { error: (error as Error).message } });
+            const errorMessage = (error as Error).message;
+
+            passwordError = t('Unable to connect to the Ledger, ensure support is enabled in settings and no other app is using it. {{errorMessage}}', { replace: { errorMessage } });
           }
         }
       }
@@ -402,7 +412,7 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
                     <Output
                       isDisabled
                       isTrimmed
-                      label={t<string>('multisig call data')}
+                      label={t('multisig call data')}
                       value={innerTx}
                       withCopy
                     />
@@ -413,7 +423,7 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
                     <Output
                       isDisabled
                       isTrimmed
-                      label={t<string>('call hash')}
+                      label={t('call hash')}
                       value={innerHash}
                       withCopy
                     />
@@ -435,10 +445,10 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
           isDisabled={!senderInfo.signAddress || isRenderError}
           label={
             flags.isQr
-              ? t<string>('Sign via Qr')
+              ? t('Sign via Qr')
               : isSubmit
-                ? t<string>('Sign and Submit')
-                : t<string>('Sign (no submission)')
+                ? t('Sign and Submit')
+                : t('Sign (no submission)')
           }
           onClick={_doStart}
           tabIndex={2}
@@ -449,8 +459,8 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
               isDisabled={!!currentItem.payload}
               label={
                 isSubmit
-                  ? t<string>('Sign and Submit')
-                  : t<string>('Sign (no submission)')
+                  ? t('Sign and Submit')
+                  : t('Sign (no submission)')
               }
               onChange={setIsSubmit}
               value={isSubmit}
@@ -460,8 +470,8 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
             <Toggle
               label={
                 isQueueSubmit
-                  ? t<string>('Submit {{queueSize}} items', { replace: { queueSize } })
-                  : t<string>('Submit individual')
+                  ? t('Submit {{queueSize}} items', { replace: { queueSize } })
+                  : t('Submit individual')
               }
               onChange={setIsQueueSubmit}
               value={isQueueSubmit}

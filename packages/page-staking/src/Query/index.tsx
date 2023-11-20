@@ -9,8 +9,8 @@ import { useParams } from 'react-router-dom';
 import { Button, InputAddressSimple, Spinner } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
-import { useTranslation } from '../translate';
-import Validator from './Validator';
+import { useTranslation } from '../translate.js';
+import Validator from './Validator.js';
 
 interface Props {
   className?: string;
@@ -30,7 +30,7 @@ function Query ({ className }: Props): React.ReactElement<Props> {
   const eras = useCall<INumber[]>(api.derive.staking.erasHistoric);
 
   const labels = useMemo(
-    () => eras && eras.map((e) => e.toHuman() as string),
+    () => eras?.map((e) => e.toHuman() as string),
     [eras]
   );
 
@@ -48,7 +48,7 @@ function Query ({ className }: Props): React.ReactElement<Props> {
       <InputAddressSimple
         className='staking--queryInput'
         defaultValue={value}
-        label={t<string>('validator to query')}
+        label={t('validator to query')}
         onChange={setValidatorId}
         onEnter={_onQuery}
       >

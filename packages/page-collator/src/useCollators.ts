@@ -4,7 +4,7 @@
 import type { BTreeSet } from '@polkadot/types';
 import type { AccountId32, Balance } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
-import type { Collator } from './types';
+import type { Collator } from './types.js';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -70,7 +70,7 @@ function useCollatorImpl (): Collator[] | undefined {
   const [state, setState] = useState<Collator[] | undefined>();
 
   const accountIds = useMemo(
-    () => state && state.map(({ accountId }) => accountId),
+    () => state?.map(({ accountId }) => accountId),
     [state]
   );
 

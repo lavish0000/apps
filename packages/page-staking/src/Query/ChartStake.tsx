@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveOwnExposure } from '@polkadot/api-derive/types';
-import type { LineData, Props } from './types';
+import type { LineData, Props } from './types.js';
 
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BN, formatBalance } from '@polkadot/util';
 
-import { useTranslation } from '../translate';
-import Chart from './Chart';
-import { balanceToNumber } from './util';
+import { useTranslation } from '../translate.js';
+import Chart from './Chart.js';
+import { balanceToNumber } from './util.js';
 
 const COLORS_STAKE = [undefined, '#8c2200', '#acacac'];
 
@@ -75,9 +75,9 @@ function ChartStake ({ labels, validatorId }: Props): React.ReactElement<Props> 
   );
 
   const legends = useMemo(() => [
-    t<string>('{{currency}} clipped', { replace: { currency } }),
-    t<string>('{{currency}} total', { replace: { currency } }),
-    t<string>('{{currency}} average', { replace: { currency } })
+    t('{{currency}} clipped', { replace: { currency } }),
+    t('{{currency}} total', { replace: { currency } }),
+    t('{{currency}} average', { replace: { currency } })
   ], [currency, t]);
 
   return (
@@ -85,7 +85,7 @@ function ChartStake ({ labels, validatorId }: Props): React.ReactElement<Props> 
       colors={COLORS_STAKE}
       labels={labels}
       legends={legends}
-      title={t<string>('elected stake')}
+      title={t('elected stake')}
       values={values}
     />
   );

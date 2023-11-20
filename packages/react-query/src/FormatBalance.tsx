@@ -11,7 +11,7 @@ import { styled } from '@polkadot/react-components/styled';
 import { useApi } from '@polkadot/react-hooks';
 import { formatBalance, isString } from '@polkadot/util';
 
-import { useTranslation } from './translate';
+import { useTranslation } from './translate.js';
 
 interface Props {
   children?: React.ReactNode;
@@ -21,7 +21,7 @@ interface Props {
   isShort?: boolean;
   label?: React.ReactNode;
   labelPost?: LabelPost;
-  value?: Compact<any> | BN | string | number | null | 'all';
+  value?: Compact<any> | BN | string | number | null;
   valueFormatted?: string;
   withCurrency?: boolean;
   withSi?: boolean;
@@ -95,7 +95,7 @@ function FormatBalance ({ children, className = '', format, formatIndex, isShort
             ? splitFormat(valueFormatted, labelPost, isShort)
             : value
               ? value === 'all'
-                ? <>{t<string>('everything')}{labelPost || ''}</>
+                ? <>{t('everything')}{labelPost || ''}</>
                 : applyFormat(value, formatInfo, withCurrency, withSi, isShort, labelPost)
               : isString(labelPost)
                 ? `-${labelPost.toString()}`
